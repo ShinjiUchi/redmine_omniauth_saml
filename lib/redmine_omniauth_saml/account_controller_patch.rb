@@ -45,6 +45,8 @@ module Redmine::OmniAuthSAML
         end
       else
         user.update_attribute(:last_login_on, Time.now)
+        user.update_attribute(:created_by_omniauth_saml, 1)
+        user.update_attribute(:hashed_password, '')
         params[:back_url] = request.env["omniauth.origin"] unless request.env["omniauth.origin"].blank?
         successful_authentication(user)
         #cannot be set earlier, because sucessful_authentication() triggers reset_session()
